@@ -1,0 +1,5 @@
+THANK YOU FOR INSTALLING EZR MALAYALAM
+--------------------------------------------------------------------------------------------
+
+For more information, check out our GitHub:
+https://github.com/Uralstech/ezrMlang/
