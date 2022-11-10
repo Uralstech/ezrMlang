@@ -5,10 +5,10 @@ from importlib import util
 
 # CONSTANTS
 
-VERSION = '1.0.0.0.0'
-VERSION_DATE = '09-11-22'
+VERSION = '1.0.0.0.1'
+VERSION_DATE = '10-11-22'
 NUMBERS = '0123456789'
-ALPHABETS = ''.join((chr(i) for i in range(3330, 3425))) + ascii_letters
+ALPHABETS = ''.join((chr(i) for i in range(3328, 3455))) + ascii_letters
 ALPHANUM = ALPHABETS + NUMBERS
 ALPHANUM_UNDERSCORE = ALPHANUM + '_'
 NUMBERS_DOT = NUMBERS + '.'
@@ -1645,7 +1645,7 @@ class Bool(Value):
 		return copy_
 
 	def __repr__(self):
-		return f'{str(self.value).lower()}'
+		return 'സത്യം' if self.value else 'തെറ്റ്'
 
 	def __hash__(self):
 		return hash(self.value)
@@ -1684,7 +1684,7 @@ class Nothing(Value):
 		return copy_
 
 	def __repr__(self):
-		return 'nothing'
+		return 'ഒന്നുമില്ല'
 
 	def __hash__(self):
 		return hash(None)
@@ -2133,7 +2133,7 @@ class Function(BaseFunction):
 		return copy_
 	
 	def __repr__(self):
-		return f'<function {self.name}>'
+		return f'<പ്രവർത്തനം <{self.name}>>'
 
 	def __hash__(self):
 		hash_value = hash(0)
@@ -2161,56 +2161,56 @@ class BuiltInFunction(BaseFunction):
 	def no_visit_method(self, node, context):
 		raise Exception(f'No execute_{self.name} method defined!')
 
-	def execute_show(self, context):
+	def execute_കാണിക്കുക(self, context):
 		print(str(context.symbol_table.get('out')))
 		return RuntimeResult().success(Nothing())
-	execute_show.arg_names = ['out']
+	execute_കാണിക്കുക.arg_names = ['out']
 
-	def execute_show_error(self, context):
+	def execute_പിശക്_കാണിക്കുക(self, context):
 		return RuntimeResult().failure(RuntimeError(self.start_pos, self.end_pos, RTE_CUSTOM, str(context.symbol_table.get('out')), context.parent))
-	execute_show_error.arg_names = ['out']
+	execute_പിശക്_കാണിക്കുക.arg_names = ['out']
 	
-	def execute_get(self, context):
+	def execute_നേടുക(self, context):
 		return RuntimeResult().success(String(input(str(context.symbol_table.get('out')))))
-	execute_get.arg_names = ['out']
+	execute_നേടുക.arg_names = ['out']
 	
-	def execute_get_int(self, context):
+	def execute_പൂർണ്ണസംഖ്യ_നേടുക(self, context):
 		while True:
 			text = input(str(context.symbol_table.get('out')))
 			try: number = int(text); break
 			except ValueError: print(f'\'{text}\' must be an [INT]. Try again!')
 
 		return RuntimeResult().success(Number(number))
-	execute_get_int.arg_names = ['out']
+	execute_പൂർണ്ണസംഖ്യ_നേടുക.arg_names = ['out']
 	
-	def execute_get_float(self, context):
+	def execute_ദശാംശം_നേടുക(self, context):
 		while True:
 			text = input(str(context.symbol_table.get('out')))
 			try: number = float(text); break
 			except ValueError: print(f'\'{text}\' must be an [INT] or [FLOAT]. Try again!')
 
 		return RuntimeResult().success(Number(number))
-	execute_get_float.arg_names = ['out']
+	execute_ദശാംശം_നേടുക.arg_names = ['out']
 	
-	def execute_clear_screen(self, context):
+	def execute_മായ്ക്കുക(self, context):
 		system('cls' if name == 'nt' else 'clear')
 		return RuntimeResult().success(Nothing())
-	execute_clear_screen.arg_names = []
+	execute_മായ്ക്കുക.arg_names = []
 
-	def execute_hash(self, context):
+	def execute_ക്രമഫലം(self, context):
 		res = RuntimeResult()
 
 		value = context.symbol_table.get('value')
 		if value.__hash__: return res.success(Number(hash(value)))
 
 		return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_ILLEGALOP, f'Value \'{str(value)}\' is not hashable', context))
-	execute_hash.arg_names = ['value']
+	execute_ക്രമഫലം.arg_names = ['value']
 
-	def execute_type_of(self, context):
+	def execute_തരം(self, context):
 		return RuntimeResult().success(String(type(context.symbol_table.get('value')).__name__))
-	execute_type_of.arg_names = ['value']
+	execute_തരം.arg_names = ['value']
 	
-	def execute_convert(self, context):
+	def execute_മാറ്റുക(self, context):
 		res = RuntimeResult()
 		value = context.symbol_table.get('value')
 		type_ = context.symbol_table.get('type')
@@ -2236,9 +2236,9 @@ class BuiltInFunction(BaseFunction):
 		else: return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_INCORRECTTYPE, 'Unknown value type', context))
 
 		return res.success(new_value)
-	execute_convert.arg_names = ['value', 'type']
+	execute_മാറ്റുക.arg_names = ['value', 'type']
 
-	def execute_insert(self, context):
+	def execute_തിരുകുക(self, context):
 		res = RuntimeResult()
 		list_ = context.symbol_table.get('list')
 		index = context.symbol_table.get('index')
@@ -2254,9 +2254,9 @@ class BuiltInFunction(BaseFunction):
 				index_ += 1
 		else: list_.elements.insert(index.value, value)
 		return res.success(Nothing())
-	execute_insert.arg_names = ['list', 'index', 'value']
+	execute_തിരുകുക.arg_names = ['list', 'index', 'value']
 
-	def execute_len(self, context):
+	def execute_നീളം(self, context):
 		res = RuntimeResult()
 		value = context.symbol_table.get('value')
 
@@ -2266,9 +2266,9 @@ class BuiltInFunction(BaseFunction):
 		elif isinstance(value, Dict): return res.success(Number(len(value.dict)))
 		elif isinstance(value, String): return res.success(Number(len(value.value)))
 		return res.success(Nothing())
-	execute_len.arg_names = ['value']
+	execute_നീളം.arg_names = ['value']
 
-	def execute_split(self, context):
+	def execute_പിളർക്കുക(self, context):
 		res = RuntimeResult()
 		value = context.symbol_table.get('value')
 		sep = context.symbol_table.get('separator')
@@ -2280,9 +2280,9 @@ class BuiltInFunction(BaseFunction):
 		split_ = value.value.split(sep.value)
 		for i in split_: elements.append(String(i))
 		return res.success(List(elements))
-	execute_split.arg_names = ['value', 'separator']
+	execute_പിളർക്കുക.arg_names = ['value', 'separator']
 
-	def execute_join(self, context):
+	def execute_ചേരുക(self, context):
 		res = RuntimeResult()
 		list_ = context.symbol_table.get('list')
 		sep = context.symbol_table.get('separator')
@@ -2294,9 +2294,9 @@ class BuiltInFunction(BaseFunction):
 
 		joined = sep.value.join(elements)
 		return res.success(String(joined))
-	execute_join.arg_names = ['list', 'separator']
+	execute_ചേരുക.arg_names = ['list', 'separator']
 
-	def execute_replace(self, context):
+	def execute_തിരികെവെക്കുക(self, context):
 		res = RuntimeResult()
 		value = context.symbol_table.get('value')
 		sub_a = context.symbol_table.get('arg_a')
@@ -2313,9 +2313,9 @@ class BuiltInFunction(BaseFunction):
 			return res.success(new_list)
 
 		return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_INCORRECTTYPE, 'First argument must be a [STRING] or [LIST]', context))
-	execute_replace.arg_names = ['value', 'arg_a', 'arg_b']
+	execute_തിരികെവെക്കുക.arg_names = ['value', 'arg_a', 'arg_b']
 
-	def execute_run(self, context):
+	def execute_നിർവഹിക്കുക(self, context):
 		res = RuntimeResult()
 		fn = context.symbol_table.get('filepath')
 
@@ -2332,7 +2332,7 @@ class BuiltInFunction(BaseFunction):
 		_, error = run(fn, script)
 		if error: return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_IO, f'Failed to finish executing script \'{fn}\'\n\n{error.as_string()}', context))
 		return res.success(Nothing())
-	execute_run.arg_names = ['filepath']
+	execute_നിർവഹിക്കുക.arg_names = ['filepath']
 
 	def copy(self):
 		copy_ = BuiltInFunction(self.name)
@@ -2341,7 +2341,7 @@ class BuiltInFunction(BaseFunction):
 		return copy_
 
 	def __repr__(self):
-		return f'<built-in function <{self.name}>>'
+		return f'<നിർമ്മിച്ചിരിക്കുന്ന പ്രവർത്തനം <{self.name}>>'
 
 	def __hash__(self):
 		method_name = f'execute_{self.name}'
@@ -2352,21 +2352,21 @@ class BuiltInFunction(BaseFunction):
 
 		return hash(self.name) ^ hash_value
 
-BuiltInFunction.show               = BuiltInFunction('show')
-BuiltInFunction.show_error         = BuiltInFunction('show_error')
-BuiltInFunction.get                = BuiltInFunction('get')
-BuiltInFunction.get_int            = BuiltInFunction('get_int')
-BuiltInFunction.get_float          = BuiltInFunction('get_float')
-BuiltInFunction.clear_screen       = BuiltInFunction('clear_screen')
-BuiltInFunction.hash               = BuiltInFunction('hash')
-BuiltInFunction.type_of            = BuiltInFunction('type_of')
-BuiltInFunction.convert            = BuiltInFunction('convert')
-BuiltInFunction.insert             = BuiltInFunction('insert')
-BuiltInFunction.len                = BuiltInFunction('len')
-BuiltInFunction.split              = BuiltInFunction('split')
-BuiltInFunction.join               = BuiltInFunction('join')
-BuiltInFunction.replace            = BuiltInFunction('replace')
-BuiltInFunction.run                = BuiltInFunction('run')
+BuiltInFunction.show               = BuiltInFunction('കാണിക്കുക')
+BuiltInFunction.show_error         = BuiltInFunction('പിശക്_കാണിക്കുക')
+BuiltInFunction.get                = BuiltInFunction('നേടുക')
+BuiltInFunction.get_int            = BuiltInFunction('പൂർണ്ണസംഖ്യ_നേടുക')
+BuiltInFunction.get_float          = BuiltInFunction('ദശാംശം_നേടുക')
+BuiltInFunction.clear_screen       = BuiltInFunction('മായ്ക്കുക')
+BuiltInFunction.hash               = BuiltInFunction('ക്രമഫലം')
+BuiltInFunction.type_of            = BuiltInFunction('തരം')
+BuiltInFunction.convert            = BuiltInFunction('മാറ്റുക')
+BuiltInFunction.insert             = BuiltInFunction('തിരുകുക')
+BuiltInFunction.len                = BuiltInFunction('നീളം')
+BuiltInFunction.split              = BuiltInFunction('പിളർക്കുക')
+BuiltInFunction.join               = BuiltInFunction('ചേരുക')
+BuiltInFunction.replace            = BuiltInFunction('തിരികെവെക്കുക')
+BuiltInFunction.run                = BuiltInFunction('നിർവഹിക്കുക')
 
 class Object(BaseFunction):
 	def __init__(self, name, body_node, arg_names, internal_context=None):
@@ -2406,7 +2406,7 @@ class Object(BaseFunction):
 		return copy_
 	
 	def __repr__(self):
-		return f'<object {self.name}>'
+		return f'<വസ്തു <{self.name}>>'
 
 	def __hash__(self):
 		hash_value = hash(0)
@@ -2846,7 +2846,7 @@ def run(fn, input_):
 
 	# Run program
 	interpreter = Interpreter()
-	context = Context('<main>')
+	context = Context('<പ്രധാന സംഭവം>')
 	context.symbol_table = global_symbol_table
 	result = interpreter.visit(ast.node, context)
 

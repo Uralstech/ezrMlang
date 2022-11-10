@@ -1,5 +1,11 @@
 THANK YOU FOR INSTALLING EZR MALAYALAM
 --------------------------------------------------------------------------------------------
 
+What's new (v1.0.0.0.1)?
+  - Support for all Malayalam characters
+  - Functions/objects properly appear in Malayalam
+  - 'true', 'false' and 'nothing' appear properly in Malayalam
+  - Name of main context now in Malayalam
+
 For more information, check out our GitHub:
 https://github.com/Uralstech/ezrMlang/
