@@ -1,52 +1,66 @@
 KEYWORDS
 --------
-item           |    ഇനം
-and            |    ഉം
-or             |    അല്ലെങ്കിൽ
-invert         |    വിപരീതം
-if             |    എങ്കിൽ
-else           |    വേറെ
-do             |    ചെയ്യുക
-count          |    എണ്ണുക
-from           |    നിന്ന്
-as             |    പോലെ
-to             |    വരെ
-step           |    ഘട്ടം
-while          |    എന്നാൽ
-function       |    പ്രവർത്തനം
-with           |    കൂടെ
-end            |    അവസാനം
-return         |    കൊടുക്കുക
-skip           |    തുടരുക
-stop           |    നിർത്തൂ
-try            |    ശ്രമിക്കുക
-error          |    പിശക്
-in             |    ൽ
-object         |    വസ്തു
-global         |    ലോകം
-include        |    ഉൾപ്പെടുന്നു
+item                    |    ഇനം
+and                     |    ഉം
+or                      |    അല്ലെങ്കിൽ
+invert                  |    വിപരീതം
+if                      |    എങ്കിൽ
+else                    |    വേറെ
+do                      |    ചെയ്യുക
+count                   |    എണ്ണുക
+from                    |    നിന്ന്
+as                      |    പോലെ
+to                      |    വരെ
+step                    |    ഘട്ടം
+while                   |    എന്നാൽ
+function                |    പ്രവർത്തനം
+with                    |    കൂടെ
+end                     |    അവസാനം
+return                  |    കൊടുക്കുക
+skip                    |    തുടരുക
+stop                    |    നിർത്തൂ
+try                     |    ശ്രമിക്കുക
+error                   |    പിശക്
+in                      |    ൽ
+object                  |    വസ്തു
+global                  |    ലോകം
+include                 |    ഉൾപ്പെടുന്നു
 
 BUILTIN VARIABLES
 -----------------
-nothing        |    ഒന്നുമില്ല
-true           |    സത്യം
-false          |    തെറ്റ്
-ezr_version    |    ഇസ്ർ_പതിപ്പ്
+nothing                 |    ഒന്നുമില്ല
+true                    |    സത്യം
+false                   |    തെറ്റ്
+ezr_version             |    ഇസ്ർ_പതിപ്പ്
 
 BUILTIN FUNCTIONS
 -----------------
-show           |    കാണിക്കുക
-show_error     |    പിശക്_കാണിക്കുക
-get            |    നേടുക
-get_int        |    പൂർണ്ണസംഖ്യ_നേടുക
-get_float      |    ദശാംശം_നേടുക
-clear          |    മായ്ക്കുക
-hash           |    ക്രമഫലം
-type_of        |    തരം
-convert        |    മാറ്റുക
-insert         |    തിരുകുക
-length_of      |    നീളം
-split          |    പിളർക്കുക
-join           |    ചേരുക
-replace        |    തിരികെവെക്കുക
-run            |    നിർവഹിക്കുക
+show                    |    കാണിക്കുക
+show_error              |    പിശക്_കാണിക്കുക
+get                     |    നേടുക
+get_int                 |    പൂർണ്ണസംഖ്യ_നേടുക
+get_float               |    ദശാംശം_നേടുക
+clear                   |    മായ്ക്കുക
+hash                    |    ക്രമഫലം
+type_of                 |    തരം
+convert                 |    മാറ്റുക
+insert                  |    തിരുകുക
+length_of               |    നീളം
+split                   |    പിളർക്കുക
+join                    |    ചേരുക
+replace                 |    തിരികെവെക്കുക
+run                     |    നിർവഹിക്കുക
+
+ERROR TAGS
+----------
+'RUNTIME'               |    'നിർവ്വഹണ-സമയം'
+'CUSTOM'                |    'മറ്റുള്ളവ'
+'DICTIONARY-KEY'        |    'നിഘണ്ടു'
+'ILLEGAL-OPERATION'     |    'നിയമവിരുദ്ധമായ-പ്രവർത്തനം'
+'UNDEFINED-VAR'         |    'നിർവചിക്കാത്ത-ഇനം'
+'INDEX-OUT-OF-RANGE'    |    'പരിധിക്ക്-പുറത്തുള്ള-സൂചിക'
+'TOO-MANY-ARGS'         |    'വളരെയധികം-വാദങ്ങൾ'
+'TOO-FEW-ARGS'          |    'വളരെ-കുറച്ച്-വാദങ്ങൾ'
+'INCORRECT-TYPE'        |    'തെറ്റായ-തരം'
+'MATH'                  |    'കണക്ക്'
+'IO'                    |    'ഇടുക-എടുക്കുക'

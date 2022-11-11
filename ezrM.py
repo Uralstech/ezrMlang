@@ -5,7 +5,7 @@ from importlib import util
 
 # CONSTANTS
 
-VERSION = '1.0.0.0.2'
+VERSION = '1.0.0.0.3'
 VERSION_DATE = '11-11-22'
 NUMBERS = '0123456789'
 ALPHABETS = ''.join((chr(i) for i in range(3328, 3455))) + ascii_letters
@@ -34,17 +34,17 @@ class InvalidSyntaxError(Error):
 	def __init__(self, start_pos, end_pos, details):
 		super().__init__('INVALID SYNTAX', start_pos, end_pos, details)
 		
-RTE_DEFAULT        = 'RUNTIME'
-RTE_CUSTOM         = 'CUSTOM'
-RTE_DICTKEY        = 'DICTIONARY-KEY'
-RTE_ILLEGALOP      = 'ILLEGAL-OPERATION'
-RTE_UNDEFINEDVAR   = 'UNDEFINED-VAR'
-RTE_IDXOUTOFRANGE  = 'INDEX-OUT-OF-RANGE'
-RTE_TOOMANYARGS    = 'TOO-MANY-ARGS'
-RTE_TOOFEWARGS     = 'TOO-FEW-ARGS'
-RTE_INCORRECTTYPE  = 'INCORRECT-TYPE'
-RTE_MATH		   = 'MATH'
-RTE_IO	   		   = 'IO'
+RTE_DEFAULT        = 'നിർവ്വഹണ-സമയം'
+RTE_CUSTOM         = 'മറ്റുള്ളവ'
+RTE_DICTKEY        = 'നിഘണ്ടു'
+RTE_ILLEGALOP      = 'നിയമവിരുദ്ധമായ-പ്രവർത്തനം'
+RTE_UNDEFINEDVAR   = 'നിർവചിക്കാത്ത-ഇനം'
+RTE_IDXOUTOFRANGE  = 'പരിധിക്ക്-പുറത്തുള്ള-സൂചിക'
+RTE_TOOMANYARGS    = 'വളരെയധികം-വാദങ്ങൾ'
+RTE_TOOFEWARGS     = 'വളരെ-കുറച്ച്-വാദങ്ങൾ'
+RTE_INCORRECTTYPE  = 'തെറ്റായ-തരം'
+RTE_MATH		   = 'കണക്ക്'
+RTE_IO	   		   = 'ഇടുക-എടുക്കുക'
 
 class RuntimeError(Error):
 	def __init__(self, start_pos, end_pos, error_type, details, context):
