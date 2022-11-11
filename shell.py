@@ -1,7 +1,7 @@
 import ezrM
 from sys import argv
 from requests import get, ConnectionError
-GITHUB = 'https://github.com/Uralstech/ezrMlang'
+GITHUB = 'https://github.com/Uralstech/ezrMlang/releases'
 
 def check_version():
 	try:

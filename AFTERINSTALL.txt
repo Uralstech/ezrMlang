@@ -7,5 +7,9 @@ What's new (v1.0.0.0.1)?
   - 'true', 'false' and 'nothing' appear properly in Malayalam
   - Name of main context now in Malayalam
 
+What's new (v1.0.0.0.2)?
+  - Keywords in error messages now show in Malayalam
+  - Synced ezrM to ezr v2.0.0.1.2
+
 For more information, check out our GitHub:
 https://github.com/Uralstech/ezrMlang/
