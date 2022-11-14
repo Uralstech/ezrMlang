@@ -5,8 +5,8 @@ from importlib import util
 
 # CONSTANTS
 
-VERSION = '1.0.0.0.3'
-VERSION_DATE = '11-11-22'
+VERSION = '1.0.0.0.4'
+VERSION_DATE = '14-11-22'
 NUMBERS = '0123456789'
 ALPHABETS = ''.join((chr(i) for i in range(3328, 3455))) + ascii_letters
 ALPHANUM = ALPHABETS + NUMBERS
@@ -24,15 +24,15 @@ class Error:
 		self.details = details
 
 	def as_string(self):
-		return f'{self.err_name}: {self.details} (FILE {self.start_pos.fn} | LINE {self.start_pos.ln+1})\n\n{str_w_undln(self.start_pos.ftxt, self.start_pos, self.end_pos)}'
+		return f'{self.err_name}: {self.details} (നിര {self.start_pos.fn} | വരി {self.start_pos.ln+1})\n\n{str_w_undln(self.start_pos.ftxt, self.start_pos, self.end_pos)}'
 
 class UnkownCharError(Error):
 	def __init__(self, start_pos, end_pos, details):
-		super().__init__('UNKNOWN CHARACTER', start_pos, end_pos, details)
+		super().__init__('അജ്ഞാത സ്വഭാവം', start_pos, end_pos, details)
 
 class InvalidSyntaxError(Error):
 	def __init__(self, start_pos, end_pos, details):
-		super().__init__('INVALID SYNTAX', start_pos, end_pos, details)
+		super().__init__('അസാധുവായ വാക്യഘടന', start_pos, end_pos, details)
 		
 RTE_DEFAULT        = 'നിർവ്വഹണ-സമയം'
 RTE_CUSTOM         = 'മറ്റുള്ളവ'
@@ -48,7 +48,7 @@ RTE_IO	   		   = 'ഇടുക-എടുക്കുക'
 
 class RuntimeError(Error):
 	def __init__(self, start_pos, end_pos, error_type, details, context):
-		super().__init__('RUNTIME ERROR', start_pos, end_pos, details)
+		super().__init__('നിർവ്വഹണ സമയ പിശക്', start_pos, end_pos, details)
 		self.error_type = error_type
 		self.context = context
 
@@ -61,11 +61,11 @@ class RuntimeError(Error):
 		context = self.context
 
 		while context:
-			result = f'\tFILE {pos.fn} | LINE {str(pos.ln+1)} | IN {context.display_name}\n{result}'
+			result = f'\tനിര {pos.fn} | വരി {str(pos.ln+1)} | {context.display_name} ൽ\n{result}'
 			pos = context.parent_entry_pos
 			context = context.parent
 
-		return f'TRACEBACK (MOST RECENT CALL LAST):\n{result}'
+		return f'ഉറവിടം തേട (ഏറ്റവും പുതിയ വിളി അവസാനമായി):\n{result}'
 
 # POSITION
 
@@ -1588,10 +1588,10 @@ class Value:
 		return None, self.illegal_operation()
 
 	def execute(self, args):
-		return RuntimeResult().failure(RuntimeError(self.start_pos, self.end_pos, RTE_ILLEGALOP, f'\'execute\' method called on unsupported type', self.context))
+		return RuntimeResult().failure(RuntimeError(self.start_pos, self.end_pos, RTE_ILLEGALOP, f'പിന്തുണയ്‌ക്കാത്ത പ്രവർത്തനം വിളി', self.context))
 
 	def retrieve(self, node):
-		return RuntimeResult().failure(RuntimeError(self.start_pos, self.end_pos, RTE_ILLEGALOP, f'\'retrieve\' method called on unsupported type', self.context))
+		return RuntimeResult().failure(RuntimeError(self.start_pos, self.end_pos, RTE_ILLEGALOP, f'പിന്തുണയ്‌ക്കാത്ത പ്രവർത്തനം വിളി', self.context))
 
 	def is_true(self):
 		return False
@@ -1600,8 +1600,8 @@ class Value:
 		raise Exception('No copy method defined!')
 
 	def illegal_operation(self, other=None):
-		otherstr = f' and \'{type(other).__name__}\''
-		return RuntimeError(self.start_pos, self.end_pos, RTE_ILLEGALOP, f'Illegal operation for type \'{type(self).__name__}\'{otherstr if other else ""}', self.context)
+		otherstr = f' ഉം \'{type(other).__name__}\' ഉം'
+		return RuntimeError(self.start_pos, self.end_pos, RTE_ILLEGALOP, f'\'{type(self).__name__}\'{otherstr if other else ""} തരത്തിനായുള്ള നിയമവിരുദ്ധ പ്രവർത്തനം', self.context)
 
 	__hash__ = None
 
@@ -1708,13 +1708,13 @@ class Number(Value):
 
 	def dived_by(self, other):
 		if isinstance(other, Number): 
-			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'Division by zero', self.context)
+			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'പൂജ്യം കൊണ്ട് ഹരണം', self.context)
 			return Number(self.value / other.value).set_context(self.context), None
 		return None, Value.illegal_operation(self, other)
 
 	def moded_by(self, other):
 		if isinstance(other, Number): 
-			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'Modulo by zero', self.context)
+			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'പൂജ്യം കൊണ്ട് മൊഡ്യൂളോ', self.context)
 			return Number(self.value % other.value).set_context(self.context), None
 		return None, Value.illegal_operation(self, other)
 
@@ -1791,14 +1791,14 @@ class String(Value):
 
 	def dived_by(self, other):
 		if isinstance(other, Number): 
-			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'Division by zero', self.context)
+			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'പൂജ്യം കൊണ്ട് ഹരണം', self.context)
 			return String(self.value[:int(len(self.value)/other.value)]).set_context(self.context), None
 		return None, Value.illegal_operation(self, other)
 		
 	def compare_lte(self, other):
 		if isinstance(other, Number):
 			try: return String(self.value[int(other.value)]).set_context(self.context), None
-			except Exception: return None, RuntimeError(other.start_pos, other.end_pos, RTE_IDXOUTOFRANGE, 'Character at this index could not be accessed from [STRING] because index is out of bounds', self.context)
+			except Exception: return None, RuntimeError(other.start_pos, other.end_pos, RTE_IDXOUTOFRANGE, 'പരിധിക്ക് പുറത്തുള്ള സൂചിക', self.context)
 		return None, Value.illegal_operation(self, other)
 
 	def compare_eq(self, other):
@@ -1863,7 +1863,7 @@ class List(Value):
 			try:
 				self.elements.pop(int(other.value))
 				return Nothing().set_context(self.context), None
-			except Exception: return None, RuntimeError(other.start_pos, other.end_pos, RTE_IDXOUTOFRANGE, 'Element at this index could not be removed from [LIST] because index is out of bounds', self.context)
+			except Exception: return None, RuntimeError(other.start_pos, other.end_pos, RTE_IDXOUTOFRANGE, 'പരിധിക്ക് പുറത്തുള്ള സൂചിക', self.context)
 		return None, Value.illegal_operation(self, other)
 
 	def multed_by(self, other):
@@ -1872,7 +1872,7 @@ class List(Value):
 
 	def dived_by(self, other):
 		if isinstance(other, Number): 
-			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'Division by zero', self.context)
+			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'പൂജ്യം കൊണ്ട് ഹരണം', self.context)
 			elements = self.elements[:int(len(self.elements)/other.value)]
 			return List(elements).set_context(self.context), None
 		return None, Value.illegal_operation(self, other)
@@ -1880,7 +1880,7 @@ class List(Value):
 	def compare_lte(self, other):
 		if isinstance(other, Number):
 			try: return self.elements[int(other.value)], None
-			except Exception: return None, RuntimeError(other.start_pos, other.end_pos, RTE_IDXOUTOFRANGE, 'Element at this index could not be accessed from [LIST] because index is out of bounds', self.context)
+			except Exception: return None, RuntimeError(other.start_pos, other.end_pos, RTE_IDXOUTOFRANGE, 'പരിധിക്ക് പുറത്തുള്ള സൂചിക', self.context)
 		return None, Value.illegal_operation(self, other)
 
 	def compare_eq(self, other):
@@ -1934,7 +1934,7 @@ class Array(Value):
 
 	def dived_by(self, other):
 		if isinstance(other, Number): 
-			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'Division by zero', self.context)
+			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'പൂജ്യം കൊണ്ട് ഹരണം', self.context)
 			elements = self.elements[:int(len(self.elements)/other.value)]
 			return Array(elements).set_context(self.context), None
 		return None, Value.illegal_operation(self, other)
@@ -1942,7 +1942,7 @@ class Array(Value):
 	def compare_lte(self, other):
 		if isinstance(other, Number):
 			try: return self.elements[int(other.value)], None
-			except Exception: return None, RuntimeError(other.start_pos, other.end_pos, RTE_IDXOUTOFRANGE, 'Element at this index could not be accessed from [ARRAY] because index is out of bounds', self.context)
+			except Exception: return None, RuntimeError(other.start_pos, other.end_pos, RTE_IDXOUTOFRANGE, 'പരിധിക്ക് പുറത്തുള്ള സൂചിക', self.context)
 		return None, Value.illegal_operation(self, other)
 
 	def compare_eq(self, other):
@@ -2001,12 +2001,12 @@ class Dict(Value):
 				self.dict.pop(hash(other))
 				return Nothing().set_context(self.context), None
 
-			return None, RuntimeError(other.start_pos, other.end_pos, RTE_DICTKEY, f'Key \'{str(other)}\'  does not exist', self.context)
-		return None, RuntimeError(other.start_pos, other.end_pos, RTE_DICTKEY, f'Illegal operation for [DICTIONARY] as key \'{str(other)}\' is not hashable', self.context)
+			return None, RuntimeError(other.start_pos, other.end_pos, RTE_DICTKEY, f'താക്കോൽ \'{str(other)}\'  നിലവിലില്ല', self.context)
+		return None, RuntimeError(other.start_pos, other.end_pos, RTE_DICTKEY, f'താക്കോൽ \'{str(other)}\' ക്രമീകരിക്കാൻ പറ്റില്ല', self.context)
 
 	def dived_by(self, other):
 		if isinstance(other, Number): 
-			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'Division by zero', self.context)
+			if other.value == 0: return None, RuntimeError(other.start_pos, other.end_pos, RTE_MATH, 'പൂജ്യം കൊണ്ട് ഹരണം', self.context)
 			new_dict = {}
 			length = int(len(self.dict)/other.value)
 			keys = tuple(self.dict.keys())
@@ -2018,8 +2018,8 @@ class Dict(Value):
 		if other.__hash__:
 			if hash(other) in self.dict.keys(): return self.dict[hash(other)][1].set_context(self.context), None
 
-			return None, RuntimeError(other.start_pos, other.end_pos, RTE_DICTKEY, f'Key \'{str(other)}\'  does not exist', self.context)
-		return None, RuntimeError(other.start_pos, other.end_pos, RTE_DICTKEY, f'Illegal operation for [DICTIONARY] as key \'{str(other)}\' is not hashable', self.context)
+			return None, RuntimeError(other.start_pos, other.end_pos, RTE_DICTKEY, f'താക്കോൽ \'{str(other)}\'  നിലവിലില്ല', self.context)
+		return None, RuntimeError(other.start_pos, other.end_pos, RTE_DICTKEY, f'താക്കോൽ \'{str(other)}\' ക്രമീകരിക്കാൻ പറ്റില്ല', self.context)
 
 	def compare_eq(self, other):
 		if isinstance(other, Dict): return Bool(hash(self) == hash(other)).set_context(self.context), None
@@ -2070,8 +2070,8 @@ class BaseFunction(Value):
 
 	def check_args(self, arg_names, args):
 		res = RuntimeResult()
-		if len(args) > len(arg_names): return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_TOOMANYARGS, f'{len(args)-len(arg_names)} too many arguments passed into \'{self.name}\'', self.context))
-		if len(args) < len(arg_names): return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_TOOFEWARGS, f'{len(arg_names)-len(args)} too few arguments passed into \'{self.name}\'', self.context))
+		if len(args) > len(arg_names): return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_TOOMANYARGS, f'\'{self.name}\' എന്നതിന് {len(args)-len(arg_names)} അധിക വാദങ്ങൾ നൽകി', self.context))
+		if len(args) < len(arg_names): return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_TOOFEWARGS, f'\'{self.name}\' എന്നതിന് {len(arg_names)-len(args)} വാദങ്ങൾ കൂടി നൽകണം', self.context))
 
 		return res.success(None)
 	
@@ -2395,7 +2395,7 @@ class Object(BaseFunction):
 
 			return_value = value
 			return res.success(return_value)
-		return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_ILLEGALOP, '\'retrieve\' method called on uninitialized object', self.context))
+		return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_ILLEGALOP, 'ആരംഭിക്കാത്ത വസ്തുവിൽ \'വീണ്ടെടുക്കുക\' പ്രവർത്തനം വിളിച്ചു', self.context))
 	
 	def copy(self):
 		copy_ = Object(self.name, self.body_node, self.arg_names, self.internal_context)
@@ -2488,7 +2488,7 @@ class Interpreter:
 			value = res.register(self.visit(value_node, context))
 			if res.should_return(): return res
 
-			if not key.__hash__: return res.failure(RuntimeError(key.start_pos, key.end_pos, RTE_DICTKEY, f'Key \'{str(key)}\' is invalid as it is not hashable', context))
+			if not key.__hash__: return res.failure(RuntimeError(key.start_pos, key.end_pos, RTE_DICTKEY, f'താക്കോൽ \'{str(key)}\' ക്രമീകരിക്കാൻ പറ്റില്ല', context))
 			main_dict[hash(key)] = (repr(key), value)
 		
 		return res.success(Dict(main_dict).set_context(context).set_pos(node.start_pos, node.end_pos))
@@ -2498,7 +2498,7 @@ class Interpreter:
 		var_name = node.var_name_token.value
 		value = context.symbol_table.get(var_name)
 
-		if not value: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_UNDEFINEDVAR, f'\'{var_name}\' is not defined', context))
+		if not value: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_UNDEFINEDVAR, f'\'{var_name}\' നിർവചിച്ചിട്ടില്ല', context))
 
 		value = value.copy().set_pos(node.start_pos, node.end_pos).set_context(context)
 		return res.success(value)
@@ -2555,7 +2555,7 @@ class Interpreter:
 			result, error = left.compare_or(right)
 
 		elif node.operator_token.matches(TT_KEY, 'ൽ'):
-			result, error = left.check_in(right)
+			result, error = right.check_in(left)
 
 		if error: return res.failure(error)
 		return res.success(result.set_pos(node.start_pos, node.end_pos))
@@ -2734,7 +2734,7 @@ class Interpreter:
 				filepath = i
 				break
 
-		if filepath == None: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'File \'{filename}\' does not exist', context))
+		if filepath == None: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'നിര \'{filename}\' നിലവിലില്ല', context))
 
 		if len(path.splitext(filepath)) > 1 and path.splitext(filepath)[1] == '.py':
 			try:
@@ -2742,10 +2742,10 @@ class Interpreter:
 				spec = util.spec_from_file_location(lib_name, location)
 				lib = util.module_from_spec(spec)
 				spec.loader.exec_module(lib)
-			except ImportError as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'Failed to load script \'{filename}\'\n{str(error).capitalize()}', context))
+			except ImportError as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'\'{filename}\' കയറ്റാൻ പറ്റില്ല:\n\n{str(error).capitalize()}', context))
 
 			try: object_ = res.register(lib.lib_Object().set_context(context).set_pos(node.start_pos, node.end_pos).execute())
-			except AttributeError as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'Failed to finish executing script \'{filename}\'\n\n{str(error)}', context))
+			except AttributeError as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'കുറിപ്പ് \'{filename}\' നിർവ്വഹിക്കാൻ പറ്റീല:\n\n{str(error)}', context))
 
 			if res.should_return(): return res
 			name = node.nickname_node.value if node.nickname_node else object_.name
@@ -2760,13 +2760,13 @@ class Interpreter:
 		else:
 			try:
 				with open(filepath, 'r', encoding='UTF-8') as f: script = f.read()
-			except Exception as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'Failed to load script \'{filename}\'\n{str(error)}', context))
+			except Exception as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'\'{filename}\' കയറ്റാൻ പറ്റില്ല:\n\n{str(error)}', context))
 
 			tokens, error = Lexer(filename, script).compile_tokens()
-			if error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'Failed to finish executing script \'{filename}\'\n\n{error.as_string()}', context))
+			if error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'കുറിപ്പ് \'{filename}\' നിർവ്വഹിക്കാൻ പറ്റീല:\n\n{error.as_string()}', context))
 
 			ast = Parser(tokens).parse()
-			if ast.error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'Failed to finish executing script \'{filename}\'\n\n{ast.error.as_string()}', context))
+			if ast.error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'കുറിപ്പ് \'{filename}\' നിർവ്വഹിക്കാൻ പറ്റീല:\n\n{ast.error.as_string()}', context))
 		
 			name = node.nickname_node.value if node.nickname_node else path.splitext(path.basename(node.name_node.value))[0]
 

@@ -36,7 +36,7 @@ def main():
 				input_ = first_command
 				first_command = None
 
-			result, error = ezrM.run('__main__', input_)
+			result, error = ezrM.run('__പ്രധാന_നിർവ്വഹണം__', input_)
 
 			if error: print(error.as_string())
 			elif result:
