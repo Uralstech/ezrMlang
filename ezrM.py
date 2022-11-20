@@ -5,8 +5,8 @@ from importlib import util
 
 # CONSTANTS
 
-VERSION = '1.0.0.0.4'
-VERSION_DATE = '14-11-22'
+VERSION = '1.0.0.0.5'
+VERSION_DATE = '20-11-22'
 NUMBERS = '0123456789'
 ALPHABETS = ''.join((chr(i) for i in range(3328, 3455))) + ascii_letters
 ALPHANUM = ALPHABETS + NUMBERS
@@ -2317,18 +2317,18 @@ class BuiltInFunction(BaseFunction):
 		res = RuntimeResult()
 		fn = context.symbol_table.get('filepath')
 
-		if not isinstance(fn, String): return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_INCORRECTTYPE, 'Argument must be a [STRING]', context))
+		if not isinstance(fn, String): return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_INCORRECTTYPE, 'വാദം [സരണി] ആയിരിക്കണം', context))
 
 		fn = fn.value
-		if not path.isfile(fn): return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_IO, f'File \'{fn}\' does not exist', context))
+		if not path.isfile(fn): return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_IO, f'നിര \'{fn}\' നിലവിലില്ല', context))
 
 		try:
 			with open(fn, 'r', encoding='UTF-8') as f:
 				script = f.read()
-		except Exception as error: return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_IO, f'Failed to load script \'{fn}\'\n{str(error)}', context))
+		except Exception as error: return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_IO, f'കുറിപ്പ് \'{fn}\' കയറ്റാൻ പറ്റീല:\n{str(error)}', context))
 		
 		_, error = run(fn, script)
-		if error: return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_IO, f'Failed to finish executing script \'{fn}\'\n\n{error.as_string()}', context))
+		if error: return res.failure(RuntimeError(self.start_pos, self.end_pos, RTE_IO, f'കുറിപ്പ് \'{fn}\' നിർവ്വഹിക്കാൻ പറ്റീല:\n\n{error.as_string()}', context))
 		return res.success(Nothing())
 	execute_നിർവഹിക്കുക.arg_names = ['filepath']
 
@@ -2742,7 +2742,7 @@ class Interpreter:
 				spec = util.spec_from_file_location(lib_name, location)
 				lib = util.module_from_spec(spec)
 				spec.loader.exec_module(lib)
-			except ImportError as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'\'{filename}\' കയറ്റാൻ പറ്റില്ല:\n\n{str(error).capitalize()}', context))
+			except ImportError as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'കുറിപ്പ് \'{filename}\' കയറ്റാൻ പറ്റീല:\n\n{str(error).capitalize()}', context))
 
 			try: object_ = res.register(lib.lib_Object().set_context(context).set_pos(node.start_pos, node.end_pos).execute())
 			except AttributeError as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'കുറിപ്പ് \'{filename}\' നിർവ്വഹിക്കാൻ പറ്റീല:\n\n{str(error)}', context))
@@ -2760,7 +2760,7 @@ class Interpreter:
 		else:
 			try:
 				with open(filepath, 'r', encoding='UTF-8') as f: script = f.read()
-			except Exception as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'\'{filename}\' കയറ്റാൻ പറ്റില്ല:\n\n{str(error)}', context))
+			except Exception as error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'കുറിപ്പ് \'{filename}\' കയറ്റാൻ പറ്റീല:\n\n{str(error)}', context))
 
 			tokens, error = Lexer(filename, script).compile_tokens()
 			if error: return res.failure(RuntimeError(node.start_pos, node.end_pos, RTE_IO, f'കുറിപ്പ് \'{filename}\' നിർവ്വഹിക്കാൻ പറ്റീല:\n\n{error.as_string()}', context))

@@ -12,12 +12,16 @@ What's new (v1.0.0.0.2)?
   - Synced ezrM to ezr v2.0.0.1.2
 
 What's new (v1.0.0.0.3)?
-  - All errors tags are now in Malayalam
+  - All error tags are now in Malayalam
 
 What's new (v1.0.0.0.4)?
   - All RuntimeErrors (except for ones from builtin functions) are now in Malayalam
   - Shell runtime filename is now in Malayalam
   - Added icon for shell and installer
+
+What's new (v1.0.0.0.5)?
+  - Translated some more errors
+  - Updated to Python 3.11
 
 For more information, check out our GitHub:
 https://github.com/Uralstech/ezrMlang/
