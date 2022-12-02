@@ -10,6 +10,6 @@ Also, I recommend using ezrShell++ instead of a command-line interface (cmd, pow
 Most CLIs can't display Malayalam properly, so I made ezrShell++ for both ezr and ezrM. Check it out [***here!***](https://github.com/Uralstech/ezrshellplusplus)
 
 ## Where is the documentation for ***ezrM***?
-While I haven't started on the textual documentation, you can check out my YouTube tutorial series [***here!***](https://www.youtube.com/watch?v=F2VGdXJtxbE&list=PLU7W-ZU9OIiFHRQ-1MRq4n0p8DRPTQTnm)
+While I haven't started on the textual documentation, you can check out my YouTube tutorial series [***here!***](https://youtube.com/playlist?list=PLU7W-ZU9OIiFHRQ-1MRq4n0p8DRPTQTnm)
 
 Found any bugs? Have a feature request? Post it [***here!***](https://github.com/Uralstech/ezrMlang/issues)
