@@ -5,8 +5,8 @@ from importlib import util
 
 # CONSTANTS
 
-VERSION = '1.0.0.0.5'
-VERSION_DATE = '20-11-22'
+VERSION = '1.0.0.0.6'
+VERSION_DATE = '25-02-23'
 NUMBERS = '0123456789'
 ALPHABETS = ''.join((chr(i) for i in range(3328, 3455))) + ascii_letters
 ALPHANUM = ALPHABETS + NUMBERS
@@ -1098,7 +1098,7 @@ class Parser:
 					res.register_advance()
 					self.advance()
 
-					if self.current_token.matches(TT_KEY, 'if'):
+					if self.current_token.matches(TT_KEY, 'എങ്കിൽ'):
 						if_expr, added_cases, has_ended = self.if_expr(secondary_call=True)
 						res.register(if_expr)
 						if res.error: return res, None, has_ended

@@ -1,4 +1,0 @@
-WARNING: EZR MALAYALAM IS STILL IN PREVIEW
-
-i.e. there may be massive incompatible changes
-  to ezr malayalam in the future

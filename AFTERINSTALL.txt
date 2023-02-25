@@ -1,27 +1,8 @@
 THANK YOU FOR INSTALLING EZR MALAYALAM
 --------------------------------------------------------------------------------------------
 
-What's new (v1.0.0.0.1)?
-  - Support for all Malayalam characters
-  - Functions/objects properly appear in Malayalam
-  - 'true', 'false' and 'nothing' appear properly in Malayalam
-  - Name of main context now in Malayalam
-
-What's new (v1.0.0.0.2)?
-  - Keywords in error messages now show in Malayalam
-  - Synced ezrM to ezr v2.0.0.1.2
-
-What's new (v1.0.0.0.3)?
-  - All error tags are now in Malayalam
-
-What's new (v1.0.0.0.4)?
-  - All RuntimeErrors (except for ones from builtin functions) are now in Malayalam
-  - Shell runtime filename is now in Malayalam
-  - Added icon for shell and installer
-
-What's new (v1.0.0.0.5)?
-  - Translated some more errors
-  - Updated to Python 3.11
+What's new (v1.0.0.0.6)?
+  - Fixed single-line else if expressions
 
 For more information, check out our GitHub:
 https://github.com/Uralstech/ezrMlang/
